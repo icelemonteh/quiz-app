@@ -129,17 +129,43 @@ window.addEventListener('DOMContentLoaded', () => {
   // Calculate the score
   const calculateScore = () => {
     let score = 0;
-    const userAnswers = [form.q0.value, form.q1.value, form.q2.value, form.q3.value, form.q4.value];
+    quizArray.map((quizItem, index) => {
+      for (let i = 0; i < 4; i++) {
+        //highlight the li if it is the correct answer
+        let li = `li_${index}_${i}`;
+        let r = `radio_${index}_${i}`;
+        liElement = document.querySelector('#' + li);
+        radioElement = document.querySelector('#' + r);
+        const userAnswers = [form.q0.value, form.q1.value, form.q2.value, form.q3.value, form.q4.value];
     
-    userAnswers.forEach((answer,index) => {
-      if(answer===correctAnswers[index]) {
-        score++;
+    // userAnswers.forEach((answer,index) => {
+    //   if(answer===correctAnswers[index]) {
+    //     score++;
+    //   }
+    // })
+
+    if (quizItem.a == i) {
+      //change background color of li element here
+      liElement.style.backgroundColor = "blue";  
+    }
+
+    if (radioElement.checked) {
+      // code for task 1 goes here
+      if(quizItem.a == i){
+        score ++;
+        console.log(score);
       }
-    })
+
+    }
+    resultsScore.innerHTML = `You scored ${score} out of ${quizArray.length}`;
+    }
     
-      resultsScore.innerHTML = `You scored ${score} out of ${quizArray.length}`;
-    // });
-  };
+    
+    
+      
+    })
+  }
+
 
 
   // submit form
@@ -152,6 +178,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // call the displayQuiz function
   displayQuiz();
+
 });
 
 
