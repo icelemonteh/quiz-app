@@ -19,7 +19,7 @@
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
 // variables
-let countdownTimer = 60 * 5;
+let countdownTimer = 5*60*1000;
 let display = document.querySelector('#time');
 const quizForm = document.querySelector('#quizWrap');
 const form = document.querySelector('.quiz');
@@ -34,10 +34,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const start = document.querySelector('#start');
   
   start.addEventListener('click', function (e) {
+    
     document.querySelector('#quizBlock').style.display = 'block';
     if (!quizOver) {
       start.style.display = 'none';
-      startTime(countdownTimer, display);
+      timer(new Date().getTime() + countdownTimer);
+      // startTime(countdownTimer, display);
     }
   });
   // quizArray QUESTIONS & ANSWERS
@@ -75,39 +77,26 @@ window.addEventListener('DOMContentLoaded', () => {
   // timer
 
 
-  function startTime(duration, display) {
-    let timer = duration, minutes, seconds;
-    
-    
-    setInterval(function () {
-      minutes = parseInt(timer / 60, 10)
-      seconds = parseInt(timer % 60, 10);
 
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
-
-      display.textContent = minutes + ":" + seconds + " minutes";
-
-      if (--timer < 0) {
-          timer = duration;
-      }
-
-      if(timer == 0) {
-        display.textContent = "00:00 minutes";
+  function timer(endTime) {
+    var myTimer = setInterval(function() {
+      let now = new Date().getTime();
+      let diff = endTime - now;
+      let minutes = Math.floor(diff % (1000 * 60 * 60) / (1000 * 60));
+      let seconds = Math.floor(diff % (1000 * 60) / 1000);
+  
+      minutes = minutes < 10 ? `0${minutes}` : minutes;
+      seconds = seconds < 10 ? `0${seconds}` : seconds;
+      display.textContent = minutes + ":" + seconds;
+      if (diff <= 0) {
+        display.textContent = "00:00";
         gameoverContainer.innerHTML = `Game over!`;
         calculateScore();
-        quizOver = true;
-        return false;
-
+        clearInterval(myTimer);
       }
-  }, 1000);
+    }, 100);
   }
 
-
-
-  function clearTimer() {
-    clearTimeout(startTime);
-  };
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
@@ -136,7 +125,7 @@ window.addEventListener('DOMContentLoaded', () => {
         let r = `radio_${index}_${i}`;
         liElement = document.querySelector('#' + li);
         radioElement = document.querySelector('#' + r);
-        const userAnswers = [form.q0.value, form.q1.value, form.q2.value, form.q3.value, form.q4.value];
+        // const userAnswers = [form.q0.value, form.q1.value, form.q2.value, form.q3.value, form.q4.value];
     
     // userAnswers.forEach((answer,index) => {
     //   if(answer===correctAnswers[index]) {
@@ -153,7 +142,6 @@ window.addEventListener('DOMContentLoaded', () => {
       // code for task 1 goes here
       if(quizItem.a == i){
         score ++;
-        console.log(score);
       }
 
     }
