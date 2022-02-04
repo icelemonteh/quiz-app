@@ -19,7 +19,7 @@
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
 // variables
-let countdownTimer = 10 * 1;
+let countdownTimer = 60 * 5;
 let display = document.querySelector('#time');
 const quizForm = document.querySelector('#quizWrap');
 const form = document.querySelector('.quiz');
